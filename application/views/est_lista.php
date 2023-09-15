@@ -6,6 +6,21 @@
     <?php
       echo date ('y/m/d H:i:s');
     ?>
+
+<!-- Configuramos boton salir -->
+    <?php
+      echo form_open_multipart('usuario/logout');
+    ?>
+      <button type="submit">Salir</button>
+    <?php
+      echo form_close();
+    ?>
+
+<!-- rescatamos usuario logeado-->
+    <h3> <?php echo "Hola: ".$this->session->userdata('login'); ?> </h3>
+    <h3> <?php echo "Tipo: ".$this->session->userdata('tipo'); ?> </h3>
+    <h3> <?php echo "id: ".$this->session->userdata('idusuario'); ?> </h3>
+
     <br>
     <table class="table">
 
