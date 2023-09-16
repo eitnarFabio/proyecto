@@ -33,9 +33,9 @@ class Usuario extends CI_Controller {
 			foreach($consulta->result() as $row)
 			{
 				//creamos variables de session
-				$this->session->set_userdata('idusuario',$row->idUsuarios); //creamos variable 'idusuario' y lo rescatamos de $row->idusuario bd
+				$this->session->set_userdata('idLogin',$row->idLogin); //creamos variable 'idusuario' y lo rescatamos de $row->idusuario bd
 				$this->session->set_userdata('login',$row->login);
-				$this->session->set_userdata('tipo',$row->tipo);
+				$this->session->set_userdata('rol',$row->rol);
 				redirect('usuario/panel','refresh');
 			}
 		}
@@ -49,7 +49,7 @@ class Usuario extends CI_Controller {
 	{
 		if($this->session->userdata('login'))
 		{
-			redirect('estudiante/index','refresh');
+			redirect('riego/index','refresh');
 			//o tambie se puede crear por roles
 		}
 		else
