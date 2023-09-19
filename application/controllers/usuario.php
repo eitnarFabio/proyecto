@@ -36,6 +36,7 @@ class Usuario extends CI_Controller {
 				$this->session->set_userdata('idLogin',$row->idLogin); //creamos variable 'idusuario' y lo rescatamos de $row->idusuario bd
 				$this->session->set_userdata('login',$row->login);
 				$this->session->set_userdata('rol',$row->rol);
+				
 				redirect('usuario/panel','refresh');
 			}
 		}

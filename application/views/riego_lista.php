@@ -1,5 +1,5 @@
 
-<!-- 
+
     <?php
       echo date ('y/m/d H:i:s');
     ?>
@@ -8,8 +8,9 @@ rescatamos usuario logeado
     <h3> <?php echo "Hola: ".$this->session->userdata('login'); ?> </h3>
     <h3> <?php echo "Tipo: ".$this->session->userdata('rol'); ?> </h3>
     <h3> <?php echo "id: ".$this->session->userdata('idLogin'); ?> </h3>
+    
 
-    <br>-->
+    <br>
 
 
 
@@ -23,15 +24,16 @@ rescatamos usuario logeado
           <div class="card mb-4">
             <div class="card-header pb-0">
               <h6>Energia solar</h6>
-                <!-- Configuramos boton salir 
+                Configuramos boton salir 
                   <?php
                     echo form_open_multipart('usuario/logout');
                   ?>
                     <button type="submit"class="btn btn-danger btn-xs">Salir</button>
                   <?php
                     echo form_close();
-                  ?>-->
+                  ?>
 
+                 
                   <?php
                     echo form_open_multipart('riego/agregar');
                   ?>
