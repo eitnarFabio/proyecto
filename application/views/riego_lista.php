@@ -1,16 +1,6 @@
 
 
-    <?php
-      echo date ('y/m/d H:i:s');
-    ?>
 
-rescatamos usuario logeado
-    <h3> <?php echo "Hola: ".$this->session->userdata('login'); ?> </h3>
-    <h3> <?php echo "Tipo: ".$this->session->userdata('rol'); ?> </h3>
-    <h3> <?php echo "id: ".$this->session->userdata('idLogin'); ?> </h3>
-    
-
-    <br>
 
 
 
@@ -23,25 +13,20 @@ rescatamos usuario logeado
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Energia solar</h6>
-                Configuramos boton salir 
-                  <?php
-                    echo form_open_multipart('usuario/logout');
-                  ?>
-                    <button type="submit"class="btn btn-danger btn-xs">Salir</button>
-                  <?php
-                    echo form_close();
-                  ?>
+              <h6>LECTURA PANEL SOLAR</h6>
+                
 
                  
-                  <?php
+                  <!-- <?php
                     echo form_open_multipart('riego/agregar');
                   ?>
 
                       <button type="submit" class="btn btn-success btn-xs">Agregar lectura</button>
 
                   <?php echo form_close();
-                  ?> 
+                  ?>   -->
+
+
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -52,8 +37,8 @@ rescatamos usuario logeado
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voltaje</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Corriente</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Fecha</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Modificar</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Eliminar</th>
+                      <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Modificar</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Eliminar</th> -->
                       
                       <th></th>
                     </tr>
@@ -69,7 +54,7 @@ rescatamos usuario logeado
                       <td>
                         <div class="d-flex px-2">
                           <div>
-                            <img src="<?php echo base_url(); ?>assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm rounded-circle me-2" alt="spotify">
+                            <img src="<?php echo base_url(); ?>assets/img/small-logos/logo-slack.svg" class="avatar avatar-sm rounded-circle me-2" alt="spotify">
                           </div>
                           <div class="my-auto">
                             <h6 class="mb-0 text-sm"><?php echo $indice; ?></h6>
@@ -78,19 +63,19 @@ rescatamos usuario logeado
                       </td>
                       
                       <td>
-                        <span class="text-xs font-weight-bold"><?php echo $row->voltaje; ?> V</span>
+                        <span class="text-xs font-weight-bold"><?php echo $row->voltaje; ?> v</span>
                       </td>
                       <td>
                         <span class="text-xs font-weight-bold"><?php echo $row->corriente; ?> I</span>
                       </td>
                       <td>
-                        <span class="text-xs font-weight-bold"><?php echo formatearFecha($row->fechaHora); ?></span>
+                        <span class="text-xs font-weight-bold"><?php echo formatearFecha($row->fecha_registro); ?></span>
                       </td>
-                      <td>
+                      <!-- <td>
                         <?php
                           echo form_open_multipart('riego/modificar');
                         ?>
-                        <input type="hidden" name="idLecturaEnergiaSolar" value="<?php echo $row->idLecturaEnergiaSolar; ?>">
+                        <input type="hidden" name="idLecturaEnergiaSolar" value="<?php echo $row->idpanel; ?>">
                         <button type="submit" class="btn btn-primary btn-xs">Modificar</button>
                         <?php
                           echo form_close();
@@ -100,12 +85,12 @@ rescatamos usuario logeado
                         <?php
                           echo form_open_multipart('riego/eliminarbd');
                         ?>
-                        <input type="hidden" name="idLecturaEnergiaSolar" value="<?php echo $row->idLecturaEnergiaSolar; ?>">
+                        <input type="hidden" name="idLecturaEnergiaSolar" value="<?php echo $row->idpanel; ?>">
                         <button type="submit" class="btn btn-danger btn-xs">Eliminar</button>
                         <?php
                           echo form_close();
                         ?>
-                      </td>
+                      </td> -->
 
                     </tr>
                       <?php
@@ -118,6 +103,37 @@ rescatamos usuario logeado
             </div>
           </div>
         </div>
+
+        <div class="row mt-4">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="card z-index-2 h-100">
+              <div class="card-header pb-0 pt-3 bg-transparent">
+                <h6 class="text-capitalize">Grafico voltaje</h6>
+              </div>
+              <div class="card-body p-3">
+              
+                <canvas id="miGrafico"></canvas>
+              
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="card z-index-2 h-100">
+              <div class="card-header pb-0 pt-3 bg-transparent">
+                <h6 class="text-capitalize">Grafico corriente</h6>
+                
+              </div>
+              <div class="card-body p-3">
+              
+                <canvas id="miGrafico2"></canvas>
+              
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
       </div>
 
 
@@ -154,3 +170,89 @@ rescatamos usuario logeado
         </div>
       </footer>
     </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    
+    <script>
+        // Obtener los datos de PHP y asignarlos a una variable de JavaScript
+        var medicionsolar = <?php echo json_encode($medicionsolar); ?>;
+        console.log(medicionsolar.result_object);
+        // Obtener el contexto del lienzo
+        var ctx = document.getElementById('miGrafico').getContext('2d');
+
+        var ctx2 = document.getElementById('miGrafico2').getContext('2d');
+
+        // Configurar los datos para el gráfico1
+        var labels = [];
+        var corrienteData = [];
+        var voltajeData = [];
+        var arrayMed = medicionsolar.result_object;
+
+        console.log(arrayMed[1].voltaje);
+
+        //array para el primer grafico
+        for (var i = 0; i < arrayMed.length; i++) {
+            // Acceder a los valores de fechaHora y voltaje de cada objeto
+            var voltajes = arrayMed[i].voltaje;
+            var corrientes = arrayMed[i].corriente;
+            var label = arrayMed[i].fecha_registro;
+            console.log("valor corriente:"+corrientes);
+            corrienteData.push(corrientes); // Convertir a número flotante
+            voltajeData.push(voltajes); // Convertir a número flotante
+            labels.push(label);
+        }
+
+        console.log("valor final:"+labels);
+
+        var datos = {
+            labels: labels,
+            datasets: [{
+                label: 'Voltajes',
+                data: voltajeData,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        };
+
+        // Crear el gráfico de barras
+        var miGrafico = new Chart(ctx, {
+            type: 'line',
+            data: datos,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        //segundo grafico
+        var datos2 = {
+            labels: labels,
+            datasets: [{
+                label: 'corriente',
+                data: corrienteData,
+                fill: false,
+                borderColor: 'rgb(99, 0, 57)',
+                tension: 0.1
+            }]
+        };
+
+        // Crear el gráfico de barras
+        var miGrafico2 = new Chart(ctx2, {
+            type: 'line',
+            data: datos2,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+    </script>

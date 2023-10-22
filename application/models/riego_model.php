@@ -9,7 +9,7 @@ class Riego_model extends CI_Model {
 	public function lista()
 	{
 		$this->db->select('*');
-		$this->db->from('lecturaenergiasolar');
+		$this->db->from('panel_solar');
 		return $this->db->get();  //manda los datos a un controlador y se lo llamara desde estudiante.php
 	}
 	
