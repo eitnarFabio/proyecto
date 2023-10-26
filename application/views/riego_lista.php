@@ -13,7 +13,7 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>LECTURA PANEL SOLAR</h6>
+              <h6>LECTURA DE POTENCIA DEL PANEL SOLAR</h6>
                 
 
                  
